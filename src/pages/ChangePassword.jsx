@@ -24,14 +24,17 @@ const ChangePassword = () => {
   return (
     <div className="wraper_auth">
       <form className="entrance" onSubmit={handleSubmit(onSubmitCurse)}>
+        <h1>Изменение пароля:</h1>
         <p>Пароль</p>
         <input
+          style={{ width: "100%", padding: "10px" }}
           {...register("password", {
             required: true,
           })}
         />
         <p>Новый Пароль</p>
         <input
+          style={{ width: "100%", padding: "10px" }}
           {...register("newPassword", {
             required: true,
           })}

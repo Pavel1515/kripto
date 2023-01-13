@@ -41,10 +41,19 @@ const Home = () => {
     cout();
     fetchValute();
     dispatch(fetchCurse({ oneValutes, twoValutes, baseUrl }));
-    setComisia(1);
   }, [openOne, openTwo, oneValutes, twoValutes, inputValue, curs]);
 
   const cout = async () => {
+    const json = JSON.stringify({
+      oneValute: oneValutes,
+      twoValute: "USDT",
+    });
+    const { data } = await axios.post(`${baseUrl}chekcurse`, json, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const cursDolar = data.curse;
     if (inputValue === " ") {
       setValue(0);
     }
@@ -52,10 +61,37 @@ const Home = () => {
       setValue(0);
     }
     if (Number(inputValue) > 0) {
-      let procent = new Big(inputValue).times(0.005).toString();
-      let newInput = new Big(inputValue).minus(procent).toString();
-      let summ = new Big(newInput).times(curs).toString();
-      setValue(summ);
+      if (cursDolar) {
+        const condition = new Big(inputValue).times(cursDolar).toString();
+        if (condition < 500) {
+          setComisia(1);
+          let procent = new Big(inputValue).times(0.001).toString();
+          let newInput = new Big(inputValue).minus(procent).toString();
+          let summ = new Big(newInput).times(curs).toString();
+          setValue(summ);
+        }
+        if (condition < 1000) {
+          setComisia(0.5);
+          let procent = new Big(inputValue).times(0.003).toString();
+          let newInput = new Big(inputValue).minus(procent).toString();
+          let summ = new Big(newInput).times(curs).toString();
+          setValue(summ);
+        }
+        if (condition < 5000) {
+          setComisia(0.3);
+          let procent = new Big(inputValue).times(0.005).toString();
+          let newInput = new Big(inputValue).minus(procent).toString();
+          let summ = new Big(newInput).times(curs).toString();
+          setValue(summ);
+        }
+        if (condition < 10000) {
+          setComisia(0.25);
+          let procent = new Big(inputValue).times(0.0025).toString();
+          let newInput = new Big(inputValue).minus(procent).toString();
+          let summ = new Big(newInput).times(curs).toString();
+          setValue(summ);
+        }
+      }
     }
   };
 

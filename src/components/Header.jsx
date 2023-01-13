@@ -21,7 +21,6 @@ function Header({ children }) {
     сheckingAuth();
   }, [authentication]);
 
-
   return (
     <>
       <header>
@@ -60,6 +59,19 @@ function Header({ children }) {
             >
               О нас
             </NavLink>
+            {authentication ? (
+              <NavLink
+                className={({ isActive }) => (isActive ? "active" : undefined)}
+                to={"/resetpassword"}
+                onClick={() => {
+                  setActiveClass(false);
+                }}
+              >
+                Настройки
+              </NavLink>
+            ) : (
+              ""
+            )}
             {authentication ? (
               <a
                 style={{ cursor: "pointer" }}
